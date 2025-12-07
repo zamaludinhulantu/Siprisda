@@ -19,7 +19,11 @@ class ResearchDownloadController extends Controller
             abort(401);
         }
 
-        if (!$user->hasAdminAccess() && ($research->submitted_by ?? null) !== $user->id) {
+        // Normalize to integers to avoid strict type mismatches from DB string IDs
+        $isOwner = (int) ($research->submitted_by ?? 0) === (int) $user->id;
+        $hasPower = $user->hasAdminAccess() || $user->hasKesbangAccess();
+
+        if (!$hasPower && !$isOwner) {
             abort(403);
         }
 
@@ -30,19 +34,38 @@ class ResearchDownloadController extends Controller
 
         $path = ltrim($value, '/');
 
+        $inlineResponse = function (string $disk, string $relative) {
+            $storage = Storage::disk($disk);
+            $absolute = $storage->path($relative);
+            $mime = $storage->mimeType($relative) ?? 'application/octet-stream';
+            $filename = basename($relative);
+
+            return response()->file($absolute, [
+                'Content-Type' => $mime,
+                'Content-Disposition' => 'inline; filename="' . $filename . '"',
+            ]);
+        };
+
         if (str_starts_with($path, 'storage/')) {
             $relative = substr($path, strlen('storage/'));
             if (Storage::disk('public')->exists($relative)) {
-                return Storage::disk('public')->download($relative);
+                return $inlineResponse('public', $relative);
             }
         }
 
         if (Storage::disk('public')->exists($path)) {
-            return Storage::disk('public')->download($path);
+            return $inlineResponse('public', $path);
         }
 
         if (Storage::exists($path)) {
-            return Storage::download($path);
+            $absolute = Storage::path($path);
+            $mime = Storage::mimeType($path) ?? 'application/octet-stream';
+            $filename = basename($path);
+
+            return response()->file($absolute, [
+                'Content-Type' => $mime,
+                'Content-Disposition' => 'inline; filename="' . $filename . '"',
+            ]);
         }
 
         if (preg_match('/\.(pdf|docx?|xlsx?|pptx?|csv|jpg|jpeg|png|gif|svg|webp|txt|zip|rar)$/i', $path)) {

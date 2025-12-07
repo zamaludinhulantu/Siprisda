@@ -22,8 +22,13 @@
                         {{ session('success') }}
                     </div>
                 @endif
+                @if (session('error'))
+                    <div class="mb-4 p-3 rounded bg-rose-50 text-rose-800">
+                        {{ session('error') }}
+                    </div>
+                @endif
 
-                <form action="{{ route('fields.store') }}" method="POST" class="flex gap-3 items-end">
+                <form action="{{ route('fields.store') }}" method="POST" class="flex flex-wrap gap-3 items-end">
                     @csrf
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Nama Bidang</label>
@@ -41,17 +46,34 @@
                             <tr class="bg-gray-100 text-sm">
                                 <th class="px-4 py-2 text-left">Nama</th>
                                 <th class="px-4 py-2 text-left">Dibuat</th>
+                                <th class="px-4 py-2 text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y">
                             @forelse ($fields as $f)
                                 <tr>
-                                    <td class="px-4 py-2">{{ $f->name }}</td>
+                                    <td class="px-4 py-2">
+                                        <form action="{{ route('fields.update', $f) }}" method="POST" class="flex items-center gap-2">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="text" name="name" value="{{ $f->name }}" class="border-gray-200 rounded w-full max-w-xs focus:border-orange-500 focus:ring-orange-500">
+                                            <button type="submit" class="inline-flex items-center rounded bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-500">Simpan</button>
+                                        </form>
+                                    </td>
                                     <td class="px-4 py-2 text-sm text-gray-600">{{ $f->created_at?->format('Y-m-d H:i') }}</td>
+                                    <td class="px-4 py-2 text-right">
+                                        <form action="{{ route('fields.destroy', $f) }}" method="POST" onsubmit="return confirm('Hapus bidang ini?');" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="inline-flex items-center rounded border border-rose-200 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50">
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="px-4 py-6 text-center text-gray-500" colspan="2">Belum ada data.</td>
+                                    <td class="px-4 py-6 text-center text-gray-500" colspan="3">Belum ada data.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -61,4 +83,3 @@
         </div>
     </div>
 </x-app-layout>
-

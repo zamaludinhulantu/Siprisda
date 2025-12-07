@@ -9,7 +9,8 @@
             $superAdminLinks = [
                 ['title' => 'Dashboard', 'icon' => 'fa-crown', 'route' => 'dashboard', 'match' => 'dashboard'],
                 ['title' => 'Monitoring Lengkap', 'icon' => 'fa-shield-halved', 'route' => 'admin.researches.index', 'match' => 'admin.researches.*'],
-                ['title' => 'Kelola Pengguna', 'icon' => 'fa-users-gear', 'route' => 'superadmin.users.index', 'match' => 'superadmin.users.*'],
+                ['title' => 'Kelola Pengguna', 'icon' => 'fa-users-gear', 'route' => 'superadmin.users.index', 'match' => 'superadmin.users.index'],
+                ['title' => 'Tambah Pengguna', 'icon' => 'fa-user-plus', 'route' => 'superadmin.users.create', 'match' => 'superadmin.users.create'],
                 ['title' => 'Data Penelitian', 'icon' => 'fa-database', 'route' => 'researches.index', 'match' => 'researches.index'],
                 ['title' => 'Unggah Penelitian', 'icon' => 'fa-upload', 'route' => 'researches.create', 'match' => 'researches.create'],
                 ['title' => 'Kelola Bidang', 'icon' => 'fa-tags', 'route' => 'fields.index', 'match' => 'fields.index'],

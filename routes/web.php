@@ -10,6 +10,7 @@ use App\Models\Field;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\SuperAdmin\UserManagementController;
+use App\Http\Controllers\SpkController;
 
 Route::get('/', function () {
     $fieldId = request('field');
@@ -62,10 +63,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/researches', [ResearchController::class, 'index'])->name('researches.index');
     Route::get('/researches/create', [ResearchController::class, 'create'])->name('researches.create');
     Route::post('/researches', [ResearchController::class, 'store'])->name('researches.store');
+    Route::get('/researches/{research}/edit', [ResearchController::class, 'edit'])->name('researches.edit');
+    Route::put('/researches/{research}', [ResearchController::class, 'update'])->name('researches.update');
+    Route::delete('/researches/{research}', [ResearchController::class, 'destroy'])->name('researches.destroy');
     Route::get('/researches/{research}', [ResearchController::class, 'show'])->name('researches.show');
      
     // Laporan
     Route::get('/reports/statistics', [ReportController::class, 'statistics'])->name('reports.statistics');
+
+    // SPK otomatis berbasis data yang ada (tidak perlu input manual)
+    Route::get('/spk/auto-rank', [SpkController::class, 'autoRank'])->name('spk.auto-rank');
 
     // Khusus admin
     Route::middleware('isAdmin')->group(function () {
@@ -76,6 +83,8 @@ Route::middleware('auth')->group(function () {
     // Verifikasi oleh Kesbangpol
     Route::post('/researches/{research}/kesbang-verify', [ResearchController::class, 'verifyKesbang'])
         ->name('researches.kesbang.verify');
+    Route::post('/researches/{research}/kesbang-reject', [ResearchController::class, 'rejectKesbang'])
+        ->name('researches.kesbang.reject');
 
     // Unggah hasil penelitian (setelah selesai)
     Route::get('/researches/{research}/results', [ResearchController::class, 'editResults'])
@@ -92,6 +101,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth','isAdmin'])->group(function () {
     Route::get('/fields', [\App\Http\Controllers\FieldController::class, 'index'])->name('fields.index');
     Route::post('/fields', [\App\Http\Controllers\FieldController::class, 'store'])->name('fields.store');
+    Route::patch('/fields/{field}', [\App\Http\Controllers\FieldController::class, 'update'])->name('fields.update');
+    Route::delete('/fields/{field}', [\App\Http\Controllers\FieldController::class, 'destroy'])->name('fields.destroy');
 });
 
 require __DIR__.'/auth.php';
@@ -118,6 +129,8 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])
             ->name('researches.download');
         Route::delete('/researches/{research}/file/{field}', [\App\Http\Controllers\Admin\ResearchAdminController::class, 'destroyFile'])
             ->name('researches.file.destroy');
+        Route::post('/researches/{research}/remind-results', [\App\Http\Controllers\Admin\ResearchAdminController::class, 'remindResults'])
+            ->name('researches.remind-results');
     });
 
 // Auth routes for researchers to download their own files
@@ -133,5 +146,8 @@ Route::middleware(['auth', 'superadmin'])
     ->name('superadmin.')
     ->group(function () {
         Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
+        Route::get('/users/create', [UserManagementController::class, 'create'])->name('users.create');
+        Route::post('/users', [UserManagementController::class, 'store'])->name('users.store');
         Route::patch('/users/{user}/role', [UserManagementController::class, 'updateRole'])->name('users.role.update');
+        Route::post('/users/{user}/reset-password', [UserManagementController::class, 'resetPassword'])->name('users.password.reset');
     });

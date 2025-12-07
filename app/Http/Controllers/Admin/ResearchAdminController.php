@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ResearchResultReminder;
+use App\Models\Field;
 use App\Models\Research;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class ResearchAdminController extends Controller
@@ -12,15 +15,48 @@ class ResearchAdminController extends Controller
     /**
      * Display a listing of the research records for admins.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Hanya tampilkan yang sudah diverifikasi oleh Kesbangpol
-        $researches = Research::query()
-            ->whereNotNull('kesbang_verified_at')
-            ->latest()
-            ->paginate(15);
+        $query = Research::query()
+            ->with(['field:id,name', 'institution:id,name']);
 
-        return view('admin.researches.index', compact('researches'));
+        // Hanya tampilkan yang sudah diverifikasi Kesbangpol untuk Bappeda
+        $query->whereNotNull('kesbang_verified_at');
+
+        $search = trim((string) $request->input('q', ''));
+        if ($search !== '') {
+            $query->where(function ($builder) use ($search) {
+                $builder->where('title', 'like', "%{$search}%")
+                    ->orWhere('author', 'like', "%{$search}%")
+                    ->orWhere('researcher_nik', 'like', "%{$search}%")
+                    ->orWhere('researcher_phone', 'like', "%{$search}%");
+            });
+        }
+
+        if ($status = $request->input('status')) {
+            $query->where('status', $status);
+        }
+
+        if ($fieldId = $request->input('field_id')) {
+            $query->where('field_id', $fieldId);
+        }
+
+        if ($year = $request->input('year')) {
+            $query->where('year', (int) $year);
+        }
+
+        if ($institution = trim((string) $request->input('institution'))) {
+            $query->whereHas('institution', function ($builder) use ($institution) {
+                $builder->where('name', 'like', '%' . $institution . '%');
+            });
+        }
+
+        $researches = $query->latest()->paginate(15)->withQueryString();
+
+        $fields = Field::orderBy('name')->get(['id', 'name']);
+        $years = Research::select('year')->whereNotNull('year')->distinct()->orderByDesc('year')->pluck('year');
+
+        return view('admin.researches.index', compact('researches', 'fields', 'years'));
     }
 
     /**
@@ -28,9 +64,12 @@ class ResearchAdminController extends Controller
      */
     public function show(Research $research)
     {
+        // Jangan tampilkan ke admin Bappeda jika belum diverifikasi Kesbangpol
         if (is_null($research->kesbang_verified_at)) {
-            abort(403, 'Data belum diverifikasi Kesbangpol.');
+            abort(404);
         }
+
+        $research->load(['submitter', 'institution', 'field', 'rejectedBy']);
         return view('admin.researches.show', compact('research'));
     }
 
@@ -39,9 +78,6 @@ class ResearchAdminController extends Controller
      */
     public function download(Research $research, string $field)
     {
-        if (is_null($research->kesbang_verified_at)) {
-            abort(403, 'Data belum diverifikasi Kesbangpol.');
-        }
         $value = data_get($research, $field);
 
         if (!$value || !is_string($value)) {
@@ -51,19 +87,38 @@ class ResearchAdminController extends Controller
         $path = ltrim($value, '/');
 
         // Try common disks/paths safely
+        $inlineResponse = function (string $disk, string $relative) {
+            $storage = Storage::disk($disk);
+            $absolute = $storage->path($relative);
+            $mime = $storage->mimeType($relative) ?? 'application/octet-stream';
+            $filename = basename($relative);
+
+            return response()->file($absolute, [
+                'Content-Type' => $mime,
+                'Content-Disposition' => 'inline; filename="' . $filename . '"',
+            ]);
+        };
+
         if (str_starts_with($path, 'storage/')) {
             $relative = substr($path, strlen('storage/'));
             if (Storage::disk('public')->exists($relative)) {
-                return Storage::disk('public')->download($relative);
+                return $inlineResponse('public', $relative);
             }
         }
 
         if (Storage::disk('public')->exists($path)) {
-            return Storage::disk('public')->download($path);
+            return $inlineResponse('public', $path);
         }
 
         if (Storage::exists($path)) {
-            return Storage::download($path);
+            $absolute = Storage::path($path);
+            $mime = Storage::mimeType($path) ?? 'application/octet-stream';
+            $filename = basename($path);
+
+            return response()->file($absolute, [
+                'Content-Type' => $mime,
+                'Content-Disposition' => 'inline; filename="' . $filename . '"',
+            ]);
         }
 
         // Fallback to public asset if looks like public URL
@@ -79,9 +134,6 @@ class ResearchAdminController extends Controller
      */
     public function destroyFile(Research $research, string $field)
     {
-        if (is_null($research->kesbang_verified_at)) {
-            abort(403, 'Data belum diverifikasi Kesbangpol.');
-        }
         $value = data_get($research, $field);
 
         if ($value && is_string($value)) {
@@ -104,5 +156,22 @@ class ResearchAdminController extends Controller
         $research->save();
 
         return back()->with('success', 'Berkas berhasil dihapus.');
+    }
+
+    /**
+     * Send an email reminder asking the researcher to upload final results.
+     */
+    public function remindResults(Request $request, Research $research)
+    {
+        $research->loadMissing('submitter');
+        $contactEmail = $research->researcher_email ?? optional($research->submitter)->email;
+
+        if (!$contactEmail) {
+            return back()->with('error', 'Email peneliti belum tersedia.');
+        }
+
+        Mail::to($contactEmail)->send(new ResearchResultReminder($research));
+
+        return back()->with('success', 'Email pengingat unggah hasil telah dikirim.');
     }
 }

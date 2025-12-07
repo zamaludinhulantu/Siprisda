@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Field;
+use App\Models\Research;
 use Illuminate\Http\Request;
 
 class FieldController extends Controller
@@ -23,5 +24,27 @@ class FieldController extends Controller
 
         return redirect()->route('fields.index')->with('success', 'Bidang berhasil ditambahkan.');
     }
-}
 
+    public function update(Request $request, Field $field)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:fields,name,' . $field->id,
+        ]);
+
+        $field->update($validated);
+
+        return redirect()->route('fields.index')->with('success', 'Bidang berhasil diperbarui.');
+    }
+
+    public function destroy(Field $field)
+    {
+        $inUse = Research::where('field_id', $field->id)->exists();
+        if ($inUse) {
+            return redirect()->route('fields.index')->with('error', 'Bidang sedang dipakai oleh penelitian, tidak dapat dihapus.');
+        }
+
+        $field->delete();
+
+        return redirect()->route('fields.index')->with('success', 'Bidang berhasil dihapus.');
+    }
+}

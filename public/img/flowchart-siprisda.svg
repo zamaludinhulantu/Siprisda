@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="840" viewBox="0 0 1200 840" aria-labelledby="title desc" role="img">
+  <title id="title">Flowchart Aplikasi SIPRISDA</title>
+  <desc id="desc">Alur publik hingga unggah hasil penelitian dan peran Kesbangpol, Admin, dan Superadmin.</desc>
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .panel { fill: #1f2937; stroke: #3b82f6; stroke-width: 2.5; rx: 10; ry: 10; }
+      .decision { fill: #111827; stroke: #f59e0b; stroke-width: 2.5; }
+      .actor { fill: #0ea5e9; stroke: #38bdf8; stroke-width: 2.5; }
+      .text { font-family: "Segoe UI", Arial, sans-serif; font-size: 15px; fill: #e5e7eb; }
+      .accent { fill: #fef3c7; }
+      .arrow { stroke: #9ca3af; stroke-width: 2.5; marker-end: url(#arrowhead); }
+      .swim { fill: none; stroke: #334155; stroke-width: 2; stroke-dasharray: 8 6; }
+      .swim-title { font-family: "Segoe UI", Arial, sans-serif; font-size: 16px; fill: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 4, 0 8" class="accent" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="840" />
+
+  <!-- Swimlanes -->
+  <rect class="swim" x="40" y="60" width="1120" height="200" />
+  <rect class="swim" x="40" y="300" width="1120" height="220" />
+  <rect class="swim" x="40" y="560" width="1120" height="220" />
+  <text class="swim-title" x="60" y="50">Publik & Peneliti</text>
+  <text class="swim-title" x="60" y="290">Kesbangpol & Admin Bappeda</text>
+  <text class="swim-title" x="60" y="550">Superadmin / Utilitas</text>
+
+  <!-- Nodes: Publik & Peneliti -->
+  <rect class="actor" x="80" y="90" width="200" height="60" rx="12" ry="12" />
+  <text class="text" x="100" y="125">Pengunjung / Peneliti</text>
+
+  <rect class="panel" x="340" y="90" width="220" height="70" />
+  <text class="text" x="360" y="120">Beranda SIPRISDA</text>
+  <text class="text" x="360" y="145">Cari & filter penelitian approved</text>
+
+  <rect class="panel" x="640" y="90" width="220" height="70" />
+  <text class="text" x="660" y="120">Registrasi / Login</text>
+  <text class="text" x="660" y="145">Autentikasi pengguna</text>
+
+  <rect class="panel" x="920" y="90" width="220" height="70" />
+  <text class="text" x="940" y="120">Dashboard Peneliti</text>
+  <text class="text" x="940" y="145">Menu pengajuan & status</text>
+
+  <rect class="panel" x="200" y="180" width="260" height="70" />
+  <text class="text" x="220" y="210">Ajukan Penelitian</text>
+  <text class="text" x="220" y="235">Lengkapi form + unggah lampiran</text>
+
+  <rect class="decision" x="540" y="180" width="220" height="70" rx="10" ry="10" />
+  <text class="text" x="560" y="210">Status: submitted</text>
+  <text class="text" x="560" y="235">Menunggu verifikasi Kesbangpol</text>
+
+  <rect class="panel" x="860" y="180" width="220" height="70" />
+  <text class="text" x="880" y="210">Hasil Disetujui</text>
+  <text class="text" x="880" y="235">Muncul di beranda publik</text>
+
+  <rect class="panel" x="620" y="240" width="220" height="70" />
+  <text class="text" x="640" y="270">Unggah Hasil Penelitian</text>
+  <text class="text" x="640" y="295">PDF + abstrak/keywords</text>
+
+  <!-- Nodes: Kesbangpol & Admin -->
+  <rect class="panel" x="160" y="330" width="240" height="70" />
+  <text class="text" x="180" y="360">Kesbangpol: Verifikasi</text>
+  <text class="text" x="180" y="385">Setujui / tolak dengan alasan</text>
+
+  <rect class="panel" x="460" y="330" width="240" height="70" />
+  <text class="text" x="480" y="360">Admin Bappeda: Keputusan</text>
+  <text class="text" x="480" y="385">Approve / Reject</text>
+
+  <rect class="panel" x="760" y="330" width="240" height="70" />
+  <text class="text" x="780" y="360">SPK Auto Rank</text>
+  <text class="text" x="780" y="385">Peringkat otomatis berbasis data</text>
+
+  <rect class="panel" x="1040" y="330" width="100" height="70" />
+  <text class="text" x="1055" y="360">Laporan</text>
+  <text class="text" x="1055" y="385">Statistik</text>
+
+  <rect class="decision" x="340" y="420" width="220" height="70" rx="10" ry="10" />
+  <text class="text" x="360" y="450">Status: rejected</text>
+  <text class="text" x="360" y="475">Revisi & ajukan ulang</text>
+
+  <!-- Nodes: Superadmin -->
+  <rect class="panel" x="200" y="610" width="240" height="70" />
+  <text class="text" x="220" y="640">Kelola Bidang</text>
+  <text class="text" x="220" y="665">Tambah/ubah/hapus bidang</text>
+
+  <rect class="panel" x="520" y="610" width="260" height="70" />
+  <text class="text" x="540" y="640">Kelola Akun & Peran</text>
+  <text class="text" x="540" y="665">Superadmin: role admin/kesbang/pengguna</text>
+
+  <rect class="panel" x="840" y="610" width="240" height="70" />
+  <text class="text" x="860" y="640">Penyimpanan & Unduhan</text>
+  <text class="text" x="860" y="665">File disajikan via rute download</text>
+
+  <!-- Arrows -->
+  <line class="arrow" x1="280" y1="120" x2="340" y2="120" />
+  <line class="arrow" x1="560" y1="120" x2="640" y2="120" />
+  <line class="arrow" x1="860" y1="120" x2="920" y2="120" />
+
+  <line class="arrow" x1="440" y1="160" x2="330" y2="180" />
+  <line class="arrow" x1="460" y1="215" x2="540" y2="215" />
+
+  <line class="arrow" x1="760" y1="215" x2="860" y2="215" />
+  <line class="arrow" x1="750" y1="250" x2="750" y2="300" />
+  <line class="arrow" x1="970" y1="215" x2="970" y2="330" />
+  <line class="arrow" x1="1030" y1="365" x2="1040" y2="365" />
+
+  <line class="arrow" x1="430" y1="365" x2="460" y2="365" />
+  <line class="arrow" x1="400" y1="400" x2="400" y2="420" />
+  <line class="arrow" x1="550" y1="365" x2="550" y2="250" />
+
+  <line class="arrow" x1="280" y1="215" x2="280" y2="330" />
+  <line class="arrow" x1="460" y1="455" x2="460" y2="250" />
+
+  <line class="arrow" x1="700" y1="650" x2="840" y2="650" />
+  <line class="arrow" x1="440" y1="650" x2="520" y2="650" />
+
+  <line class="arrow" x1="970" y1="650" x2="970" y2="215" />
+  <line class="arrow" x1="820" y1="365" x2="760" y2="365" />
+  <line class="arrow" x1="930" y1="365" x2="1040" y2="365" />
+
+  <line class="arrow" x1="860" y1="215" x2="620" y2="215" />
+  <line class="arrow" x1="730" y1="300" x2="730" y2="320" />
+  <line class="arrow" x1="400" y1="490" x2="300" y2="610" />
+</svg>

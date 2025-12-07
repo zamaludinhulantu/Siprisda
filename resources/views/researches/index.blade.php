@@ -38,9 +38,10 @@
                             <th class="px-6 py-3 text-left">Judul</th>
                             <th class="px-6 py-3 text-left">Bidang</th>
                             <th class="px-6 py-3 text-left">Institusi</th>
+                            <th class="px-6 py-3 text-left">Periode</th>
+                            <th class="px-6 py-3 text-left">Kontak</th>
                             <th class="px-6 py-3 text-left">Status</th>
-                            <th class="px-6 py-3 text-left">Diajukan</th>
-                            <th class="px-6 py-3 text-right">Aksi</th>
+                            <th class="px-6 py-3 text-left">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 bg-white">
@@ -55,31 +56,85 @@
                                     'default' => ['label' => 'Draft', 'class' => 'bg-gray-50 text-gray-600'],
                                 ];
                                 $statusInfo = $statusMap[$status] ?? $statusMap['default'];
+                                $canEdit = in_array($status, ['draft', 'submitted', 'rejected'], true);
+                                $canDelete = in_array($status, ['draft', 'submitted'], true);
+                                $startDate = optional($research->start_date ?? $research->submitted_at ?? $research->created_at)->format('d M Y');
+                                $endDate = optional($research->end_date ?? $research->submitted_at ?? $research->created_at)->format('d M Y');
+                                $yearLabel = $research->year
+                                    ?: optional($research->start_date)->format('Y')
+                                    ?: optional($research->end_date)->format('Y')
+                                    ?: optional($research->submitted_at ?? $research->created_at)->format('Y')
+                                    ?: 'Belum diisi';
+                                $periodLabel = $startDate && $endDate
+                                    ? $startDate . ' s/d ' . $endDate
+                                    : ($startDate ?: ($endDate ?: 'Belum diisi'));
                             @endphp
                             <tr class="hover:bg-orange-50/30 transition">
                                 <td class="px-6 py-4">
                                     <p class="font-semibold text-gray-900 line-clamp-2">{{ $research->title }}</p>
-                                    <p class="text-xs text-gray-500 mt-1">Penulis: {{ $research->author ?? '-' }}</p>
+                                    <p class="text-xs text-gray-500 mt-1">Peneliti: {{ $research->author ?? '-' }}</p>
+                                    <p class="text-[11px] text-gray-400 mt-1">ID: {{ $research->id }}</p>
                                 </td>
                                 <td class="px-6 py-4 text-gray-700">{{ optional($research->field)->name ?? '-' }}</td>
-                                <td class="px-6 py-4 text-gray-700">{{ optional($research->institution)->name ?? '-' }}</td>
+                                <td class="px-6 py-4 text-gray-700">
+                                    <p class="font-semibold text-gray-900">{{ optional($research->institution)->name ?? 'Institusi belum diisi' }}</p>
+                                    @if($research->keywords)
+                                        <p class="text-xs text-gray-500 line-clamp-1 mt-1">{{ $research->keywords }}</p>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 text-gray-700">
+                                    <div class="space-y-1 text-xs">
+                                        <span class="inline-flex items-center rounded-full bg-orange-50 px-3 py-1 font-semibold text-orange-700 ring-1 ring-orange-100">Periode: {{ $periodLabel }}</span>
+                                        <span class="inline-flex items-center rounded-full bg-slate-50 px-2.5 py-1 text-[11px] font-semibold text-slate-600 ring-1 ring-slate-100">Tahun {{ $yearLabel }}</span>
+                                        @if($research->start_date && $research->end_date && now()->between($research->start_date, $research->end_date))
+                                            <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 ring-1 ring-emerald-100">
+                                                <span class="h-2 w-2 rounded-full bg-emerald-500"></span> Berjalan
+                                            </span>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-700">
+                                    <div class="space-y-1 text-xs text-gray-600">
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-id-card text-[10px] text-gray-400"></i>
+                                            <span>{{ $research->researcher_nik ?? '-' }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-phone text-[10px] text-gray-400"></i>
+                                            <span>{{ $research->researcher_phone ?? '-' }}</span>
+                                        </div>
+                                    </div>
+                                </td>
                                 <td class="px-6 py-4">
                                     <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold {{ $statusInfo['class'] }}">
                                         {{ $statusInfo['label'] }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-gray-600">
-                                    {{ optional($research->created_at)->format('d M Y') ?? '-' }}
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <a href="{{ route('researches.show', $research->id) }}" class="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-white">
-                                        <i class="fas fa-eye text-[11px]"></i> Detail
-                                    </a>
+                                <td class="px-6 py-4">
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <a href="{{ route('researches.show', $research->id) }}" class="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-white">
+                                            <i class="fas fa-eye text-[11px]"></i> Detail
+                                        </a>
+                                        @if($canEdit)
+                                            <a href="{{ route('researches.edit', $research->id) }}" class="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-white">
+                                                <i class="fas fa-pen text-[11px]"></i> Edit
+                                            </a>
+                                        @endif
+                                        @if($canDelete)
+                                            <form action="{{ route('researches.destroy', $research->id) }}" method="POST" onsubmit="return confirm('Hapus penelitian ini?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="inline-flex items-center gap-1 rounded-lg border border-rose-200 px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50">
+                                                    <i class="fas fa-trash text-[11px]"></i> Hapus
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-6 text-center text-gray-500 text-sm">Belum ada penelitian. Unggah penelitian pertama Anda.</td>
+                                <td colspan="7" class="px-6 py-6 text-center text-gray-500 text-sm">Belum ada penelitian. Unggah penelitian pertama Anda.</td>
                             </tr>
                         @endforelse
                     </tbody>

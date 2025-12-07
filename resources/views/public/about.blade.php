@@ -35,4 +35,29 @@
             </li>
         </ul>
     </section>
+
+    <section class="rounded-2xl border border-gray-100 bg-white/95 backdrop-blur shadow-sm p-6">
+        <h2 class="text-xl font-semibold text-gray-900">Hubungi Kami</h2>
+        <p class="text-gray-600 mt-2 leading-7">
+            Silakan hubungi kami untuk pertanyaan, masukan, atau permintaan data tambahan.
+        </p>
+        <div class="mt-6 grid gap-6 sm:grid-cols-2 text-sm text-gray-600">
+            <div>
+                <p class="text-xs uppercase font-semibold text-gray-500">Email</p>
+                <p class="text-gray-900 mt-1">publikasi@bappeda.go.id</p>
+            </div>
+            <div>
+                <p class="text-xs uppercase font-semibold text-gray-500">Telepon</p>
+                <p class="text-gray-900 mt-1">(0435) 123-456</p>
+            </div>
+            <div>
+                <p class="text-xs uppercase font-semibold text-gray-500">Alamat</p>
+                <p class="text-gray-900 mt-1">Jl. Pembangunan No. 1, Kota Gorontalo</p>
+            </div>
+            <div>
+                <p class="text-xs uppercase font-semibold text-gray-500">Jam Layanan</p>
+                <p class="text-gray-900 mt-1">Senin - Jumat, 08.00 - 16.00 WITA</p>
+            </div>
+        </div>
+    </section>
 @endsection

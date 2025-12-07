@@ -1,4 +1,4 @@
-@php
+﻿@php
     $currentRole = Auth::user()->role;
     $isAdminPanel = in_array($currentRole, ['admin', 'superadmin']);
 @endphp
@@ -97,6 +97,70 @@
                 </div>
             </div>
         </section>
+
+        @if($isAdminPanel)
+            <section class="rounded-3xl border border-[#cde3ff] bg-white p-6 shadow-md shadow-[#cde3ff]/50">
+                <div class="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[#0f3d73]">Cari Penelitian</p>
+                        <h3 class="text-lg font-semibold text-gray-900">Filter cepat di dashboard</h3>
+                        <p class="text-sm text-gray-600">Judul/Penulis • Bidang • Tahun • Institusi</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="{{ route('admin.researches.index') }}" class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50">
+                            <i class="fas fa-database text-xs"></i> Masuk Daftar
+                        </a>
+                        @if(config('spk.auto_rank_enabled'))
+                            <a href="{{ route('spk.auto-rank') }}" class="inline-flex items-center gap-2 rounded-lg border border-[#b7d4ff] bg-[#e7f5ff] px-4 py-2 text-sm font-semibold text-[#0f3d73] hover:bg-[#d5e9ff]">
+                                <i class="fas fa-sitemap text-xs"></i> SPK (SAW)
+                            </a>
+                        @endif
+                    </div>
+                </div>
+
+                <form method="GET" action="{{ route('admin.researches.index') }}" class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <div class="md:col-span-2">
+                        <label for="q" class="text-sm font-medium text-gray-700">Judul atau Penulis</label>
+                        <input type="text" id="q" name="q" placeholder="Masukkan kata kunci" class="mt-1 w-full rounded-xl border-gray-200 focus:border-orange-500 focus:ring-orange-500 bg-white" value="{{ request('q') }}">
+                    </div>
+                    <div>
+                        <label for="field_id" class="text-sm font-medium text-gray-700">Bidang Penelitian</label>
+                        <select id="field_id" name="field_id" class="mt-1 w-full rounded-xl border-gray-200 focus:border-orange-500 focus:ring-orange-500 bg-white">
+                            <option value="">Semua bidang</option>
+                            @foreach($fields ?? [] as $field)
+                                <option value="{{ $field->id }}" @selected(request('field_id') == $field->id)>{{ $field->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="year" class="text-sm font-medium text-gray-700">Tahun</label>
+                        <select id="year" name="year" class="mt-1 w-full rounded-xl border-gray-200 focus:border-orange-500 focus:ring-orange-500 bg-white">
+                            <option value="">Semua tahun</option>
+                            @foreach(($years ?? []) as $year)
+                                <option value="{{ $year }}" @selected(request('year') == $year)>{{ $year }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="institution" class="text-sm font-medium text-gray-700">Institusi</label>
+                        <input type="text" id="institution" name="institution" placeholder="Nama institusi" class="mt-1 w-full rounded-xl border-gray-200 focus:border-orange-500 focus:ring-orange-500 bg-white" value="{{ request('institution') }}">
+                    </div>
+                    <div class="md:col-span-2 lg:col-span-3 flex items-center gap-3">
+                        <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-gray-900 px-5 py-3 text-sm font-semibold text-white hover:bg-gray-800">
+                            <i class="fas fa-search text-xs mr-2"></i> Terapkan Filter
+                        </button>
+                        @if(request()->hasAny(['q','field_id','year','institution','status']))
+                            <a href="{{ route('admin.researches.index') }}" class="text-sm font-semibold text-gray-700 hover:text-gray-900">Reset</a>
+                        @endif
+                        @if(config('spk.auto_rank_enabled'))
+                            <a href="{{ route('spk.auto-rank') }}" class="inline-flex items-center gap-2 rounded-xl border border-[#b7d4ff] bg-[#e7f5ff] px-4 py-3 text-sm font-semibold text-[#0f3d73] hover:bg-[#d5e9ff]">
+                                <i class="fas fa-sitemap text-xs"></i> Buka SPK
+                            </a>
+                        @endif
+                    </div>
+                </form>
+            </section>
+        @endif
 
         @if(isset($recentResearches) && $recentResearches->count())
             <section class="rounded-2xl border border-gray-100 bg-white shadow-sm p-6">
@@ -224,6 +288,11 @@
             <div class="rounded-2xl border border-gray-100 bg-white/70 backdrop-blur p-6 shadow-sm">
                 <h4 class="text-lg font-semibold text-gray-900">Tautan Cepat</h4>
                 <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    @if($isAdminPanel && config('spk.auto_rank_enabled'))
+                        <a href="{{ route('spk.auto-rank') }}" class="rounded-xl border border-orange-100 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-orange-50">
+                            SPK Otomatis (SAW)
+                        </a>
+                    @endif
                     <a href="{{ route('public.statistics') }}" class="rounded-xl border border-orange-100 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-orange-50">
                         Statistik Publik
                     </a>
@@ -246,3 +315,9 @@
         </section>
     </div>
 </x-app-layout>
+
+
+
+
+
+

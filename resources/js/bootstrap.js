@@ -1,4 +1,1 @@
-import axios from 'axios';
-window.axios = axios;
-
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// Axios tidak digunakan; file dibiarkan kosong untuk menghindari bundling yang tidak perlu.

@@ -8,7 +8,7 @@
         @php
             $adminLinks = [
                 ['title' => 'Dashboard', 'icon' => 'fa-home', 'route' => 'dashboard', 'match' => 'dashboard'],
-                ['title' => 'Data Penelitian', 'icon' => 'fa-book', 'route' => 'researches.index', 'match' => 'researches.index'],
+                ['title' => 'Data Penelitian', 'icon' => 'fa-book', 'route' => 'admin.researches.index', 'match' => 'admin.researches.*'],
                 ['title' => 'Unggah Penelitian', 'icon' => 'fa-upload', 'route' => 'researches.create', 'match' => 'researches.create'],
                 ['title' => 'Statistik', 'icon' => 'fa-chart-bar', 'route' => 'reports.statistics', 'match' => 'reports.statistics'],
                 ['title' => 'Kelola Bidang', 'icon' => 'fa-tags', 'route' => 'fields.index', 'match' => 'fields.index'],

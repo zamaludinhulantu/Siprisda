@@ -6,7 +6,7 @@
     <div class="max-w-3xl">
         <p class="text-xs font-semibold uppercase tracking-[0.3em] text-orange-500">Panduan Singkat</p>
         <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Alur Pengajuan Penelitian ke Bappeda</h1>
-        <p class="text-gray-600 mt-4 text-lg">Ikuti langkah demi langkah berikut agar penelitian Anda cepat dipublikasikan di portal publik.</p>
+        <p class="text-gray-600 mt-4 text-lg">Ikuti langkah demi langkah berikut agar pengajuan cepat diverifikasi Kesbangpol lalu terbit di portal publik.</p>
     </div>
 @endsection
 
@@ -19,8 +19,8 @@
                     <span class="flex-1 w-px bg-orange-100"></span>
                 </div>
                 <div>
-                    <h2 class="text-lg font-semibold text-gray-900">Registrasi & Verifikasi</h2>
-                    <p class="text-gray-600 mt-1">Buat akun peneliti, lengkapi profil serta data institusi. Pastikan kontak dapat dihubungi.</p>
+                    <h2 class="text-lg font-semibold text-gray-900">Buat Akun & Profil</h2>
+                    <p class="text-gray-600 mt-1">Registrasi sebagai peneliti, lengkapi data diri, institusi, dan kontak yang aktif.</p>
                 </div>
             </li>
             <li class="flex gap-4">
@@ -29,8 +29,8 @@
                     <span class="flex-1 w-px bg-orange-100"></span>
                 </div>
                 <div>
-                    <h2 class="text-lg font-semibold text-gray-900">Unggah Penelitian</h2>
-                    <p class="text-gray-600 mt-1">Masukkan judul, abstrak, kata kunci, dan dokumen pendukung (PDF). Sistem akan memberi nomor antrian.</p>
+                    <h2 class="text-lg font-semibold text-gray-900">Ajukan Penelitian</h2>
+                    <p class="text-gray-600 mt-1">Isi judul, abstrak, kata kunci, jadwal, serta unggah PDF surat pengantar atau proposal.</p>
                 </div>
             </li>
             <li class="flex gap-4">
@@ -40,16 +40,26 @@
                 </div>
                 <div>
                     <h2 class="text-lg font-semibold text-gray-900">Verifikasi Kesbangpol</h2>
-                    <p class="text-gray-600 mt-1">Pastikan Surat Keterangan Penelitian telah diterbitkan oleh Kesbangpol. Admin akan menandai status otomatis.</p>
+                    <p class="text-gray-600 mt-1">Pastikan Surat Keterangan Penelitian terbit. Status Kesbangpol ditandai otomatis oleh admin.</p>
                 </div>
             </li>
             <li class="flex gap-4">
                 <div class="flex flex-col items-center">
                     <span class="h-10 w-10 rounded-full bg-orange-100 text-orange-600 font-semibold flex items-center justify-center">4</span>
+                    <span class="flex-1 w-px bg-orange-100"></span>
                 </div>
                 <div>
-                    <h2 class="text-lg font-semibold text-gray-900">Publikasi</h2>
-                    <p class="text-gray-600 mt-1">Setelah disetujui admin, penelitian tampil pada katalog publik, statistik, dan dapat diunduh masyarakat.</p>
+                    <h2 class="text-lg font-semibold text-gray-900">Perbaikan & Komentar</h2>
+                    <p class="text-gray-600 mt-1">Cek catatan admin di dashboard. Unggah revisi atau lengkapi data jika diminta.</p>
+                </div>
+            </li>
+            <li class="flex gap-4">
+                <div class="flex flex-col items-center">
+                    <span class="h-10 w-10 rounded-full bg-orange-100 text-orange-600 font-semibold flex items-center justify-center">5</span>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-900">Unggah Hasil & Publikasi</h2>
+                    <p class="text-gray-600 mt-1">Unggah dokumen akhir. Setelah disetujui admin, penelitian tampil di katalog publik dan statistik.</p>
                 </div>
             </li>
         </ol>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 140" role="img" aria-labelledby="title desc">
+  <title id="title">Logo Siprisda</title>
+  <desc id="desc">Sistem Informasi Penelitian dan Riset Daerah</desc>
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF8A00"/>
+      <stop offset="100%" stop-color="#FFB347"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0D1B2A"/>
+      <stop offset="100%" stop-color="#162B45"/>
+    </linearGradient>
+  </defs>
+  <rect width="420" height="140" rx="20" fill="url(#g2)"/>
+  <g transform="translate(22 18)">
+    <rect x="0" y="0" width="96" height="96" rx="18" fill="url(#g1)"/>
+    <path d="M20 70c0-20 12-36 32-36s32 16 32 36" fill="none" stroke="#FFF5E6" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="52" cy="34" r="10" fill="#FFF5E6" opacity="0.95"/>
+    <path d="M30 74h44" stroke="#0D1B2A" stroke-width="8" stroke-linecap="round" opacity="0.18"/>
+    <path d="M34 78h36" stroke="#0D1B2A" stroke-width="4" stroke-linecap="round" opacity="0.35"/>
+    <circle cx="52" cy="34" r="5" fill="#0D1B2A" opacity="0.25"/>
+  </g>
+  <g transform="translate(136 52)" fill="#F8FBFF">
+    <text x="0" y="30" font-family="Poppins, 'Segoe UI', sans-serif" font-size="42" font-weight="700" letter-spacing="2">SIPRISDA</text>
+    <text x="2" y="60" font-family="Poppins, 'Segoe UI', sans-serif" font-size="15" font-weight="500" fill="#DCE7F5">
+      Sistem Informasi Penelitian dan Riset Daerah
+    </text>
+  </g>
+</svg>

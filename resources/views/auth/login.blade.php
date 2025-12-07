@@ -1,7 +1,7 @@
 <x-guest-layout>
-    <div class="space-y-3 text-center mb-6">
-        <h1 class="text-2xl font-semibold text-gray-900">{{ __('Masuk ke Portal Riset') }}</h1>
-        <p class="text-sm text-gray-500">Gunakan akun yang sudah terdaftar untuk melanjutkan.</p>
+    <div class="space-y-2 mb-6 text-center">
+        <h1 class="text-2xl font-semibold text-gray-900">{{ __('Masuk ke SIPRISDA') }}</h1>
+        <p class="text-sm text-gray-500">Login untuk lanjut ke dashboard.</p>
     </div>
 
     <!-- Session Status -->
@@ -19,7 +19,7 @@
 
         <!-- Password -->
         <div>
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" :value="__('Kata Sandi')" />
 
             <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
@@ -33,7 +33,7 @@
         <div class="flex items-center justify-between">
             <label for="remember_me" class="inline-flex items-center">
                 <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+                <span class="ms-2 text-sm text-gray-600">{{ __('Ingat saya') }}</span>
             </label>
             @if (Route::has('password.request'))
                 <a class="text-sm text-orange-600 hover:text-orange-700 font-semibold" href="{{ route('password.request') }}">

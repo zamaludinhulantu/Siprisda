@@ -25,8 +25,8 @@
                     <p>Bidang, institusi, jadwal.</p>
                 </li>
                 <li class="rounded-xl border border-gray-100 bg-white p-3">
-                    <p class="font-semibold text-gray-900">3. Perizinan</p>
-                    <p>Unggah surat rekomendasi dari Kesbangpol.</p>
+                    <p class="font-semibold text-gray-900">3. Dokumen Pendukung</p>
+                    <p>Proposal PDF (opsional) sebelum disetujui.</p>
                 </li>
             </ol>
         </section>
@@ -89,11 +89,13 @@
                     </div>
                 </div>
 
-                <div>
-                    <label class="text-sm font-medium text-gray-700">Surat Rekomendasi Kesbangpol</label>
-                    <input type="file" name="kesbang_letter" accept="application/pdf,image/*" class="mt-1 w-full rounded-lg border-gray-200 focus:border-orange-500 focus:ring-orange-500" required>
-                    <p class="text-xs text-gray-500 mt-1">Unggah file PDF atau foto surat rekomendasi resmi.</p>
-                    @error('kesbang_letter')<p class="text-xs text-rose-600 mt-1">{{ $message }}</p>@enderror
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-sm font-medium text-gray-700">Proposal Penelitian (opsional)</label>
+                        <input type="file" name="pdf_file" accept="application/pdf" class="mt-1 w-full rounded-lg border-gray-200 focus:border-orange-500 focus:ring-orange-500">
+                        <p class="text-xs text-gray-500 mt-1">Format PDF, maksimum 20 MB.</p>
+                        @error('pdf_file')<p class="text-xs text-rose-600 mt-1">{{ $message }}</p>@enderror
+                    </div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-3">

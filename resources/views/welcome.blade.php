@@ -12,43 +12,43 @@
     $totalFieldCount = $fieldCollection->count();
     $hasFields = $totalFieldCount > 0;
     $heroHighlights = collect([
-        ['number' => 1, 'text' => 'Kurasi otomatis dari institusi resmi'],
-        ['number' => 2, 'text' => 'Filter cerdas berdasarkan bidang dan tahun'],
-        ['number' => 3, 'text' => 'Statistik instan untuk kebutuhan pelaporan'],
-        ['number' => 4, 'text' => 'Responsif di semua perangkat'],
+        ['number' => 1, 'text' => 'Hanya riset yang disetujui Bappeda & Kesbangpol'],
+        ['number' => 2, 'text' => 'Filter tema, bidang, tahun, dan institusi'],
+        ['number' => 3, 'text' => 'Unduh lampiran dan ikuti progres penelitian'],
+        ['number' => 4, 'text' => 'Statistik siap pakai untuk laporan cepat'],
     ]);
     $statCards = collect([
         [
             'label' => 'Penelitian Terdaftar',
             'value' => number_format($totalResearchCount),
-            'description' => 'Riset yang telah melewati proses verifikasi',
+            'description' => 'Riset terkurasi dan siap dipublikasikan',
         ],
         [
             'label' => 'Institusi Aktif',
             'value' => number_format($totalInstitutionCount),
-            'description' => 'Kolaborasi lintas lembaga',
+            'description' => 'Instansi yang sudah mengirimkan riset',
         ],
         [
             'label' => 'Bidang Riset',
             'value' => number_format($totalFieldCount),
-            'description' => 'Prioritas pembangunan daerah',
+            'description' => 'Fokus prioritas pembangunan daerah',
         ],
     ]);
     $journeySteps = collect([
         [
             'label' => 'Langkah 1',
-            'title' => 'Jelajahi Katalog',
-            'description' => 'Gunakan filter untuk menemukan penelitian berdasarkan tema, tahun, atau institusi.',
+            'title' => 'Telusuri & Filter',
+            'description' => 'Temukan penelitian berdasarkan tema, bidang, tahun, atau institusi yang relevan.',
         ],
         [
             'label' => 'Langkah 2',
-            'title' => 'Analisis Temuan',
-            'description' => 'Bandingkan data antar bidang dan manfaatkan statistik publik untuk rekomendasi kebijakan.',
+            'title' => 'Buka Detail',
+            'description' => 'Lihat ringkasan, jadwal, dan unduh lampiran PDF yang tersedia.',
         ],
         [
             'label' => 'Langkah 3',
-            'title' => 'Kolaborasi',
-            'description' => 'Hubungi peneliti atau institusi terkait lalu lanjutkan kerja sama berbasis data.',
+            'title' => 'Lanjutkan Kolaborasi',
+            'description' => 'Hubungi peneliti atau institusi terkait untuk tindak lanjut berbasis data.',
         ],
     ]);
 @endphp
@@ -56,22 +56,22 @@
 @section('hero')
     <div class="grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-12 items-center">
         <div class="space-y-6">
-            <p class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-orange-600">
-                <span class="h-1.5 w-1.5 rounded-full bg-orange-600"></span>
+            <p class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#0f3d73]">
+                <span class="h-1.5 w-1.5 rounded-full bg-[#0f3d73]"></span>
                 Portal Penelitian Terbuka
             </p>
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">Eksplorasi Riset Terbaru di {{ config('app.name', 'Aplikasi') }}</h1>
-            <p class="text-gray-600 text-lg">Semua penelitian yang disetujui admin tersaji dalam satu etalase digital. Temukan kolaborator, pantau isu strategis daerah, dan unduh data pendukung tanpa berpindah laman.</p>
+            <p class="text-gray-600 text-lg">Katalog publik berisi penelitian yang sudah diverifikasi. Telusuri fokus riset daerah, unduh lampiran, dan ikuti progres tanpa berpindah laman.</p>
             <ul class="grid sm:grid-cols-2 gap-4 text-sm text-gray-700">
                 @foreach($heroHighlights as $highlight)
                     <li class="flex items-start gap-3">
-                        <span class="mt-1 h-5 w-5 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xs font-semibold">{{ $highlight['number'] }}</span>
+                        <span class="mt-1 h-5 w-5 rounded-full bg-[#e7f5ff] text-[#0f3d73] flex items-center justify-center text-xs font-semibold">{{ $highlight['number'] }}</span>
                         {{ $highlight['text'] }}
                     </li>
                 @endforeach
             </ul>
             <div class="flex flex-wrap gap-3">
-                <a href="#katalog" class="inline-flex items-center rounded-lg bg-orange-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500">Lihat Katalog Publik</a>
+                <a href="#katalog" class="inline-flex items-center rounded-lg bg-[#0f3d73] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#174f9e]">Lihat Katalog Publik</a>
                 @if (Route::has('login'))
                     @auth
                         <a href="{{ url('/dashboard') }}" class="inline-flex items-center rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50">Buka Dashboard</a>
@@ -86,17 +86,17 @@
                 @endif
             </div>
         </div>
-        <div class="bg-white/80 backdrop-blur rounded-2xl p-6 border border-orange-100 shadow-lg shadow-orange-100/50">
+        <div class="bg-white/80 backdrop-blur rounded-2xl p-6 border border-[#cde3ff] shadow-lg shadow-[#cde3ff]/50">
             <p class="text-sm font-semibold text-gray-900 mb-4">Cari Penelitian</p>
             <form method="GET" action="{{ url('/') }}" class="space-y-4">
                 <div>
                     <label for="q" class="block text-sm font-medium text-gray-700 mb-1">Judul atau Penulis</label>
-                    <input id="q" type="text" name="q" value="{{ request('q') }}" placeholder="Masukkan kata kunci" class="border-gray-200 focus:border-orange-500 focus:ring-orange-500 rounded-lg w-full" />
+                    <input id="q" type="text" name="q" value="{{ request('q') }}" placeholder="Masukkan kata kunci" class="border-gray-200 focus:border-[#1d5fbf] focus:ring-[#1d5fbf] rounded-lg w-full" />
                 </div>
                 @if($hasFields)
                     <div>
                         <label for="field" class="block text-sm font-medium text-gray-700 mb-1">Bidang Penelitian</label>
-                        <select id="field" name="field" class="border-gray-200 focus:border-orange-500 focus:ring-orange-500 rounded-lg w-full">
+                        <select id="field" name="field" class="border-gray-200 focus:border-[#1d5fbf] focus:ring-[#1d5fbf] rounded-lg w-full">
                             <option value="">Semua bidang</option>
                             @foreach($fieldCollection as $f)
                                 <option value="{{ $f->id }}" @selected(request('field') == $f->id)>{{ $f->name }}</option>
@@ -107,11 +107,11 @@
                 <div class="grid sm:grid-cols-2 gap-4">
                     <div>
                         <label for="year" class="block text-sm font-medium text-gray-700 mb-1">Tahun</label>
-                        <input id="year" type="number" name="year" value="{{ request('year') }}" min="2000" max="{{ date('Y') }}" class="border-gray-200 focus:border-orange-500 focus:ring-orange-500 rounded-lg w-full" />
+                        <input id="year" type="number" name="year" value="{{ request('year') }}" min="2000" max="{{ date('Y') }}" class="border-gray-200 focus:border-[#1d5fbf] focus:ring-[#1d5fbf] rounded-lg w-full" />
                     </div>
                     <div>
                         <label for="institution" class="block text-sm font-medium text-gray-700 mb-1">Institusi</label>
-                        <input id="institution" type="text" name="institution" value="{{ request('institution') }}" placeholder="Nama institusi" class="border-gray-200 focus:border-orange-500 focus:ring-orange-500 rounded-lg w-full" />
+                        <input id="institution" type="text" name="institution" value="{{ request('institution') }}" placeholder="Nama institusi" class="border-gray-200 focus:border-[#1d5fbf] focus:ring-[#1d5fbf] rounded-lg w-full" />
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-3">
@@ -128,7 +128,7 @@
 @section('content')
     <section class="grid sm:grid-cols-3 gap-4">
         @foreach($statCards as $card)
-            <div class="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm">
+            <div class="rounded-2xl border border-[#cde3ff] bg-white p-5 shadow-sm">
                 <p class="text-sm font-medium text-gray-500">{{ $card['label'] }}</p>
                 <p class="text-3xl font-bold text-gray-900 mt-2">{{ $card['value'] }}</p>
                 <p class="text-xs text-gray-500 mt-1">{{ $card['description'] }}</p>

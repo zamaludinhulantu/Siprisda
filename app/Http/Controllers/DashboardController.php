@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Field;
 use App\Models\Research;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,6 +28,17 @@ class DashboardController extends Controller
             ->take(6)
             ->get();
 
-        return view('dashboard', compact('total', 'approved', 'rejected', 'submitted', 'recentResearches'));
+        $fields = collect();
+        $years = collect();
+        if (Auth::check() && Auth::user()->hasRole(['admin', 'superadmin'])) {
+            $fields = Field::orderBy('name')->get(['id', 'name']);
+            $years = Research::select('year')
+                ->whereNotNull('year')
+                ->distinct()
+                ->orderByDesc('year')
+                ->pluck('year');
+        }
+
+        return view('dashboard', compact('total', 'approved', 'rejected', 'submitted', 'recentResearches', 'fields', 'years'));
     }
 }
