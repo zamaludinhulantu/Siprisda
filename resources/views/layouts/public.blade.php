@@ -128,8 +128,8 @@
         <footer class="bg-white border-t border-[#cde3ff]">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-gray-500">
                 <div>
-                    <p class="font-semibold text-gray-900">&copy; {{ date('Y') }} {{ config('app.name', 'Aplikasi') }}</p>
-                    <p class="text-xs">Portal publik resmi Bappeda untuk keterbukaan data riset.</p>
+                    <p class="font-semibold text-gray-900">&copy; {{ date('Y') }} SIPRISDA</p>
+                    <p class="text-xs">Portal publik resmi SIPRISDA untuk keterbukaan data riset Bappeda.</p>
                 </div>
             </div>
         </footer>
