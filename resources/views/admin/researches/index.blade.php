@@ -12,13 +12,13 @@
         </div>
     </x-slot>
 
-    <div class="space-y-6">
-        <section class="rounded-2xl border border-orange-100 bg-gradient-to-br from-orange-50 via-white to-slate-50 p-6 shadow-sm">
+    <div class="space-y-6 max-w-4xl mx-auto px-4 lg:px-0">
+        <section class="rounded-2xl border border-slate-100 bg-gradient-to-br from-slate-50 via-white to-slate-50 p-6 shadow-sm">
             <div class="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-orange-500">Katalog</p>
+                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Katalog</p>
                     <h2 class="text-xl font-semibold text-gray-900">Lihat Katalog</h2>
-                    <p class="text-sm text-gray-600">Judul atau Penulis • Bidang Penelitian • Tahun • Institusi</p>
+                    <p class="text-sm text-gray-600">Judul atau Penulis, Bidang Penelitian, Tahun, Institusi</p>
                 </div>
                 <div class="flex gap-2">
                     <a href="{{ route('admin.researches.index') }}" class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50">
@@ -27,36 +27,32 @@
                 </div>
             </div>
 
-            <form method="GET" action="{{ route('admin.researches.index') }}" class="mt-6 grid gap-4 md:grid-cols-4">
-                <div class="md:col-span-2">
+            <form method="GET" action="{{ route('admin.researches.index') }}" class="mt-6 grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-12 items-end">
+                <div class="lg:col-span-4 md:col-span-2">
                     <label for="q" class="text-sm font-medium text-gray-700">Judul atau Penulis</label>
-                    <input type="text" id="q" name="q" value="{{ request('q') }}" placeholder="Masukkan kata kunci" class="mt-1 w-full rounded-lg border-gray-200 focus:border-orange-500 focus:ring-orange-500">
+                    <input type="text" id="q" name="q" value="{{ request('q') }}" placeholder="Masukkan kata kunci" class="mt-1 w-full rounded-lg border-gray-200 bg-white focus:border-orange-500 focus:ring-orange-500">
                 </div>
-                <div>
+                <div class="lg:col-span-3 md:col-span-2">
                     <label for="field_id" class="text-sm font-medium text-gray-700">Bidang Penelitian</label>
-                    <select id="field_id" name="field_id" class="mt-1 w-full rounded-lg border-gray-200 focus:border-orange-500 focus:ring-orange-500">
+                    <select id="field_id" name="field_id" class="mt-1 w-full rounded-lg border-gray-200 bg-white focus:border-orange-500 focus:ring-orange-500">
                         <option value="">Semua bidang</option>
                         @foreach($fields ?? [] as $field)
                             <option value="{{ $field->id }}" @selected(request('field_id') == $field->id)>{{ $field->name }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div>
+                <div class="lg:col-span-2 md:col-span-1">
                     <label for="year" class="text-sm font-medium text-gray-700">Tahun</label>
-                    <select id="year" name="year" class="mt-1 w-full rounded-lg border-gray-200 focus:border-orange-500 focus:ring-orange-500">
+                    <select id="year" name="year" class="mt-1 w-full rounded-lg border-gray-200 bg-white focus:border-orange-500 focus:ring-orange-500">
                         <option value="">Semua tahun</option>
                         @foreach(($years ?? []) as $year)
                             <option value="{{ $year }}" @selected(request('year') == $year)>{{ $year }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="md:col-span-2">
-                    <label for="institution" class="text-sm font-medium text-gray-700">Institusi</label>
-                    <input type="text" id="institution" name="institution" value="{{ request('institution') }}" placeholder="Nama institusi" class="mt-1 w-full rounded-lg border-gray-200 focus:border-orange-500 focus:ring-orange-500">
-                </div>
-                <div>
+                <div class="lg:col-span-2 md:col-span-1">
                     <label for="status" class="text-sm font-medium text-gray-700">Status</label>
-                    <select id="status" name="status" class="mt-1 w-full rounded-lg border-gray-200 focus:border-orange-500 focus:ring-orange-500">
+                    <select id="status" name="status" class="mt-1 w-full rounded-lg border-gray-200 bg-white focus:border-orange-500 focus:ring-orange-500">
                         <option value="">Semua status</option>
                         @foreach([
                             'draft' => 'Draft',
@@ -69,10 +65,14 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="flex items-end gap-2">
-                    <button type="submit" class="flex-1 inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800">Terapkan Filter</button>
+                <div class="lg:col-span-6 md:col-span-2">
+                    <label for="institution" class="text-sm font-medium text-gray-700">Institusi</label>
+                    <input type="text" id="institution" name="institution" value="{{ request('institution') }}" placeholder="Nama institusi" class="mt-1 w-full rounded-lg border-gray-200 bg-white focus:border-orange-500 focus:ring-orange-500">
+                </div>
+                <div class="lg:col-span-6 md:col-span-2 flex flex-wrap justify-start md:justify-end items-center gap-2">
+                    <button type="submit" class="inline-flex items-center justify-center rounded-lg bg-gray-900 px-5 py-2 text-sm font-semibold text-white hover:bg-gray-800 shadow-sm w-full md:w-auto">Terapkan Filter</button>
                     @if(request()->hasAny(['q','status','field_id','year','institution']))
-                        <a href="{{ route('admin.researches.index') }}" class="inline-flex items-center justify-center rounded-lg border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50">Reset</a>
+                        <a href="{{ route('admin.researches.index') }}" class="inline-flex items-center justify-center rounded-lg border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 w-full md:w-auto">Reset</a>
                     @endif
                 </div>
             </form>
@@ -145,8 +145,8 @@
                                             : ($startDate ?? ($endDate ?? '-'));
                                     @endphp
                                     <div class="space-y-1 text-xs">
-                                        <span class="inline-flex items-center rounded-full bg-orange-50 px-3 py-1 font-semibold text-orange-700 ring-1 ring-orange-100">Periode: {{ $periodLabel }}</span>
-                                        <span class="inline-flex items-center rounded-full bg-slate-50 px-2.5 py-1 text-[11px] font-semibold text-slate-600 ring-1 ring-slate-100">Tahun {{ $research->year ?? '-' }}</span>
+                                        <span class="inline-flex items-center rounded-full bg-orange-50 px-2.5 py-1 text-[11px] font-semibold text-orange-700 ring-1 ring-orange-100">Periode: {{ $periodLabel }}</span>
+                                        <span class="inline-flex items-center rounded-full bg-slate-50 px-2 py-1 text-[11px] font-semibold text-slate-600 ring-1 ring-slate-100">Tahun {{ $research->year ?? '-' }}</span>
                                         @if($research->start_date && $research->end_date && now()->between($research->start_date, $research->end_date))
                                             <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 ring-1 ring-emerald-100">
                                                 <span class="h-2 w-2 rounded-full bg-emerald-500"></span> Berjalan
